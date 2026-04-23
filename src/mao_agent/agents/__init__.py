@@ -1,5 +1,6 @@
 # src/mao_agent/agents/__init__.py
 from .base import BaseSpecialistAgent, AgentConfig
+from .editor import EditorAgent, AGENT_REGISTRY
 from .contradiction import ContradictionAgent
 from .practice import PracticeAgent
 from .protracted_war import ProtractedWarAgent
@@ -11,6 +12,8 @@ from .paper_tiger import PaperTigerAgent
 __all__ = [
     "BaseSpecialistAgent",
     "AgentConfig",
+    "EditorAgent",
+    "AGENT_REGISTRY",
     "ContradictionAgent",
     "PracticeAgent",
     "ProtractedWarAgent",
