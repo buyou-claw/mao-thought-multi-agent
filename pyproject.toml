@@ -1,0 +1,23 @@
+[project]
+name = "mao-thought-multi-agent"
+version = "0.1.0"
+description = "毛泽东思想多智能体协作系统"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=0.0.20",
+    "langchain>=0.1.0",
+    "langchain-anthropic>=0.1.0",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "pydantic>=2.0.0",
+    "httpx>=0.26.0",
+]
+
+[project.scripts]
+mao-agent = "mao_agent.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
