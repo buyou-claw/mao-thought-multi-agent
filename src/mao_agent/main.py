@@ -8,6 +8,7 @@ from typing import Optional
 from mao_agent.agents import EditorAgent, AGENT_REGISTRY
 from mao_agent.knowledge.loader import KnowledgeLoader
 from mao_agent.knowledge.pdf_importer import PDFImporter
+from mao_agent.tools.report import ReportGenerator
 
 app = typer.Typer(help="毛泽东思想多智能体协作系统")
 console = Console()
@@ -43,6 +44,10 @@ def analyze(
 
     console.print(synthesis)
 
+    # 保存报告
+    filepath = ReportGenerator.save_report(synthesis, question)
+    console.print(f"\n[bold green]报告已保存至：[/bold green]{filepath}")
+
 @app.command()
 def chat():
     """交互式对话"""
@@ -61,6 +66,10 @@ def chat():
         state = editor.dispatch_task(question, relevant)
         synthesis = editor.synthesize(state)
         console.print(synthesis)
+
+        # 保存报告
+        filepath = ReportGenerator.save_report(synthesis, question)
+        console.print(f"\n[bold green]报告已保存至：[/bold green]{filepath}")
 
 @app.command()
 def agents():

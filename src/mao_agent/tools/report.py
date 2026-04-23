@@ -1,7 +1,37 @@
 # src/mao_agent/tools/report.py
+import hashlib
+from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Any
 
 class ReportGenerator:
+    REPORTS_DIR = Path("reports")
+
+    @classmethod
+    def ensure_reports_dir(cls):
+        """确保报告目录存在"""
+        cls.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    @classmethod
+    def generate_filename(cls, content: str, task: str) -> str:
+        """根据内容生成唯一文件名"""
+        prefix = task[:20].strip().replace(" ", "_").replace("/", "_").replace("\\", "_")
+        prefix = "".join(c for c in prefix if c.isalnum() or c in "_-")
+        if not prefix:
+            prefix = "report"
+        content_hash = hashlib.md5(content.encode()[:200]).hexdigest()[:8]
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        return f"{prefix}_{timestamp}_{content_hash}.md"
+
+    @classmethod
+    def save_report(cls, report: str, task: str) -> Path:
+        """保存报告到本地markdown文件"""
+        cls.ensure_reports_dir()
+        filename = cls.generate_filename(report, task)
+        filepath = cls.REPORTS_DIR / filename
+        filepath.write_text(report, encoding="utf-8")
+        return filepath
+
     @staticmethod
     def generate_analysis_report(task: str, agent_outputs: Dict[str, str]) -> str:
         """生成结构化分析报告"""
