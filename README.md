@@ -2,6 +2,10 @@
 
 > 基于毛泽东思想七大理论框架的多Agent协作系统，通过专精Agent的自主协商，为用户提供对话咨询、内容创作、分析研究服务。
 
+## 贡献者
+
+[![GitHub Contributors](https://img.shields.io/github/contributors/buyou-claw/mao-thought-multi-agent?style=flat-square)](https://github.com/buyou-claw/mao-thought-multi-agent/graphs/contributors)
+
 ## 核心特性
 
 - **七大专项Agent**：矛盾分析法、实践论、持久战、农村包围城市、统一战线、群众路线、纸老虎论
