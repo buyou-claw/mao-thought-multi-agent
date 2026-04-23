@@ -1,6 +1,7 @@
 # src/mao_agent/agents/contradiction.py
 from typing import Dict, Any
 from .base import BaseSpecialistAgent, AgentConfig
+from ..llm import get_llm
 
 AGENT_CONFIG = AgentConfig(
     name="contradiction",
@@ -40,6 +41,7 @@ SYSTEM_PROMPT = """你是一位专精矛盾分析法的思想者，擅长运用�
 class ContradictionAgent(BaseSpecialistAgent):
     def __init__(self, knowledge_loader=None):
         super().__init__(AGENT_CONFIG, knowledge_loader)
+        self.llm = get_llm()
 
     def get_system_prompt(self) -> str:
         knowledge = self.load_knowledge()
@@ -47,19 +49,5 @@ class ContradictionAgent(BaseSpecialistAgent):
 
     def analyze(self, task: str, context: Dict[str, Any] = None) -> str:
         prompt = f"{self.get_system_prompt()}\n\n## 待分析问题\n{task}"
-        return f"""## 矛盾结构分析
-
-针对问题：{task}
-
-### 识别的矛盾
-1. [主要矛盾]：待进一步分析
-2. [次要矛盾]：待进一步分析
-
-## 主要矛盾分析
-主要矛盾的主要方面：[待分析]
-
-## 矛盾转化判断
-矛盾转化条件：[待分析]
-
-## 破局建议
-抓住主要矛盾，带动次要矛盾的解决。"""
+        response = self.llm.invoke(prompt)
+        return response.content
