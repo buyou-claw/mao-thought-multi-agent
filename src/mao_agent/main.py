@@ -7,6 +7,7 @@ from rich.text import Text
 from typing import Optional
 from mao_agent.agents import EditorAgent, AGENT_REGISTRY
 from mao_agent.knowledge.loader import KnowledgeLoader
+from mao_agent.knowledge.pdf_importer import PDFImporter
 
 app = typer.Typer(help="毛泽东思想多智能体协作系统")
 console = Console()
@@ -67,6 +68,22 @@ def agents():
     console.print("[bold]专项Agent列表：[/bold]\n")
     for name, agent_class in AGENT_REGISTRY.items():
         console.print(f"  • {name}")
+
+@app.command()
+def pdf_import(
+    file: str = typer.Argument(..., help="PDF文件路径"),
+    category: Optional[str] = typer.Option(None, "--category", help="指定归属的思想类别"),
+    auto_detect: bool = typer.Option(True, "--auto-detect", help="自动检测类别"),
+):
+    """导入PDF到知识库"""
+    importer = PDFImporter()
+    try:
+        result = importer.import_pdf(file, agent_name=category, auto_detect=auto_detect)
+        console.print(f"[bold green]导入成功！[/bold green]")
+        console.print(f"转换文件: {result['converted_file']}")
+        console.print(f"导入到: {result['imported_to']}")
+    except Exception as e:
+        console.print(f"[bold red]导入失败:[/bold red] {e}")
 
 @app.command()
 def version():
